@@ -6,6 +6,10 @@ const repoList = document.querySelector(".repo-list");
 const repoInfoSection = document.querySelector(".repos");
 //section where individual repo data appears
 const individualRepoInfo = document.querySelector(".repo-data");
+//button to go back to global repo gallery
+const backToGallery = document.querySelector(".view-repos");
+//select input with "search by name" 
+const filterInput = document.querySelector(".filter-repos");
 
 const username = "kaguay";
 
@@ -50,6 +54,7 @@ const fetchRepos = async function () {
 
 //Display Info About Your Repos
 const displayRepoInfo = function (repoData) {
+    filterInput.classList.remove("hide");
     for (const repo of repoData) {
         const repoItem = document.createElement("li");
         repoItem.classList.add("repo");
@@ -93,6 +98,7 @@ const displayRepoInfo = function (repoData) {
         individualRepoInfo.innerHTML= "";
         individualRepoInfo.classList.remove("hide");
         repoInfoSection.classList.add("hide");
+        backToGallery.classList.remove("hide");
         const newElement = document.createElement("div");
         newElement.innerHTML = `
         <h3>Name: ${repoInfo.name}</h3>
@@ -105,3 +111,25 @@ const displayRepoInfo = function (repoData) {
 
     };
  
+backToGallery.addEventListener("click", function () {
+    repoInfoSection.classList.remove("hide");
+    individualRepoInfo.classList.add("hide");
+    backToGallery.classList.add("hide");
+
+} )
+
+filterInput.addEventListener("input", function (e) {
+    const searchText = e.target.value;
+    //console.log(searchText);
+    const repos = document.querySelectorAll(".repo");
+    const searchLowercase = searchText.toLowerCase();
+
+    for (const repo of repos) {
+        const repoLowercase = repo.innerText.toLowerCase();
+        if (repoLowercase.includes(searchLowercase)) {
+            repo.classList.remove("hide");
+        } else {
+            repo.classList.add("hide");
+        }
+    }
+});
